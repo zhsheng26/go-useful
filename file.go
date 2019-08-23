@@ -8,9 +8,20 @@ import (
 	"path/filepath"
 )
 
-// 同步文件夹,保证对应的两个文件夹的内容一样
-func syncDirs(dirKv map[string]string) {
-
+func copyFile(srcPath, destPath string) {
+	src, err := os.Open(srcPath)
+	defer src.Close()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	dst, err := os.Create(destPath)
+	defer dst.Close()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	_, err = io.Copy(dst, src)
 }
 
 func copyDirFile(dirSrc string, dirDest string) {
