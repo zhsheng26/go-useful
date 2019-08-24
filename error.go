@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type UsError interface {
+type Error interface {
 	error
 	Status() int
 }
@@ -53,7 +53,7 @@ type Response struct {
 
 func responseWithError(w http.ResponseWriter, err error, payload interface{}) {
 	switch e := err.(type) {
-	case UsError:
+	case Error:
 		logrus.Warnf("http %d - %s", e.Status(), e)
 		resp, _ := json.Marshal(Response{Code: e.Status(), Message: e.Error(), Content: payload})
 		w.Header().Set("Content-Type", "application/json")
